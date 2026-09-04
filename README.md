@@ -7,8 +7,12 @@ Backend starter em C#/.NET 10: login, segurança e testes prontos pra começar a
 - ASP.NET Core Web API + EF Core 10 (Postgres via Npgsql), padrão repository
 - Autenticação JWT (registro/login, hash de senha com BCrypt)
 - **Guarda automatizado contra queries N+1** rodando como teste normal no CI (ver abaixo)
+- Rate limiting nos endpoints de auth (10 req/min por IP, contra brute force)
+- Health check real (`/health` testa a conexão com o Postgres, não só "app de pé")
+- Middleware global de exceção (devolve `ProblemDetails`, nunca stack trace cru)
+- Documentação interativa da API via [Scalar](https://scalar.com) em `/scalar/v1` (ambiente Development)
 - Docker + docker-compose (API + Postgres)
-- CI no GitHub Actions: build, test, build da imagem Docker em toda alteração
+- CI no GitHub Actions: build, test (unitário + integração via `WebApplicationFactory`), build da imagem Docker em toda alteração
 
 ## Rodando local
 
@@ -50,6 +54,15 @@ dotnet test
 ```
 
 Os testes sobem um Postgres real via [Testcontainers](https://testcontainers.com/) — precisa do Docker rodando na máquina (ou no runner de CI, que já vem com Docker). De propósito não usa o provider `InMemory` do EF Core: `InMemory` não gera SQL de verdade, então não serve pra contar query.
+
+Duas camadas de teste:
+
+- **Unitário** (`Auth/`, `QueryCount/`): chama repository/service direto, contra o `AppDbContext`.
+- **Integração** (`Integration/`): sobe a API inteira via `WebApplicationFactory<Program>` — roteamento, model binding, autenticação e rate limiting reais, batendo por HTTP.
+
+### Pegadinha de configuração que os testes de integração pegaram
+
+`Program.cs` usa top-level statements. Se você ler `builder.Configuration.GetConnectionString(...)` numa variável local **antes** de `builder.Build()` e capturar essa variável num closure (`options.UseNpgsql(connectionString)`), o `WebApplicationFactory` dos testes de integração não consegue sobrescrever esse valor — a leitura já aconteceu contra o `appsettings.json` de verdade antes do override de teste ser aplicado. Por isso `ConnectionStrings`, `Jwt` e o health check do Postgres neste projeto são todos resolvidos **dentro** dos delegates de configuração (via `IConfiguration`/`IOptions` injetados), nunca numa variável capturada cedo demais. Vale a pena manter esse padrão ao adicionar novas configurações.
 
 ### O guarda de N+1
 
@@ -94,14 +107,17 @@ Variáveis de ambiente (sobrescrevem `appsettings.json`, sintaxe `Section__Key`)
 
 ```
 src/BackTemplate.Api/
-  Auth/            registro, login, geração de JWT
+  Auth/             registro, login, geração de JWT
   Controllers/      endpoints HTTP
   Data/             DbContext, entidades, migrations
   Diagnostics/       QueryCountInterceptor (guarda de N+1)
+  Middleware/        tratamento global de exceção
+  RateLimiting/      nomes de política de rate limit
   Repositories/     acesso a dados
 
 tests/BackTemplate.Tests/
-  Auth/             testes de registro/login
+  Auth/             testes de registro/login (chamando o service direto)
+  Integration/       testes batendo na API real via WebApplicationFactory
   QueryCount/       teste do guarda de N+1
   TestFixtures/      fixture do Postgres via Testcontainers
 ```

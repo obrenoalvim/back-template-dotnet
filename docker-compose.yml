@@ -22,6 +22,7 @@ services:
     ports:
       - "8081:8080"
     environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
       ConnectionStrings__Default: "Host=postgres;Port=5432;Database=backtemplate;Username=postgres;Password=postgres"
       Jwt__Issuer: "back-template-dotnet"
       Jwt__Audience: "back-template-dotnet-clients"

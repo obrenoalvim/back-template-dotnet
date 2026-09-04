@@ -1,10 +1,13 @@
 using BackTemplate.Api.Auth;
+using BackTemplate.Api.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace BackTemplate.Api.Controllers;
 
 [ApiController]
 [Route("api/auth")]
+[EnableRateLimiting(RateLimiterPolicies.Auth)]
 public class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost("register")]
