@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: backtemplate
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    environment:
+      ConnectionStrings__Default: "Host=postgres;Port=5432;Database=backtemplate;Username=postgres;Password=postgres"
+      Jwt__Issuer: "back-template-dotnet"
+      Jwt__Audience: "back-template-dotnet-clients"
+      Jwt__SigningKey: "CHANGE_ME_dev_only_signing_key_min_32_chars"
+      Jwt__ExpiryMinutes: "60"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres-data:
