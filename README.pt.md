@@ -2,6 +2,8 @@
 
 # back-template-dotnet
 
+[![CI](https://github.com/obrenoalvim/back-template-dotnet/actions/workflows/ci.yml/badge.svg)](https://github.com/obrenoalvim/back-template-dotnet/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Backend starter em C#/.NET 10: login, segurança e testes prontos pra começar a construir a API de verdade. Mesma família de `back-template-spring`, `back-template-go`, `back-template-fastapi`, `back-template-nest` e `back-template-laravel` — clona e já sai construindo.
 
 ## O que já vem pronto
