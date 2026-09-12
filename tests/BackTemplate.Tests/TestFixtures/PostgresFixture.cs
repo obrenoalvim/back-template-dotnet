@@ -12,8 +12,7 @@ namespace BackTemplate.Tests.TestFixtures;
 /// </summary>
 public class PostgresFixture : IAsyncLifetime
 {
-    private readonly PostgreSqlContainer _container = new PostgreSqlBuilder()
-        .WithImage("postgres:16-alpine")
+    private readonly PostgreSqlContainer _container = new PostgreSqlBuilder("postgres:16-alpine")
         .WithDatabase("backtemplate_test")
         .WithUsername("postgres")
         .WithPassword("postgres")
