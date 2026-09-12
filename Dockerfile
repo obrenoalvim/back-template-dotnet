@@ -11,7 +11,11 @@ RUN dotnet publish src/BackTemplate.Api/BackTemplate.Api.csproj -c Release -o /a
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
+
+RUN useradd --uid 1654 --create-home app
 COPY --from=build /app .
+RUN chown -R app:app /app
+USER app
 
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080

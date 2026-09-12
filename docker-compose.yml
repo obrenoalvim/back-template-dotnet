@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_DB: backtemplate
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     ports:
       - "5432:5432"
     volumes:
@@ -23,10 +23,10 @@ services:
       - "8081:8080"
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
-      ConnectionStrings__Default: "Host=postgres;Port=5432;Database=backtemplate;Username=postgres;Password=postgres"
+      ConnectionStrings__Default: "Host=postgres;Port=5432;Database=backtemplate;Username=postgres;Password=${POSTGRES_PASSWORD:-postgres}"
       Jwt__Issuer: "back-template-dotnet"
       Jwt__Audience: "back-template-dotnet-clients"
-      Jwt__SigningKey: "CHANGE_ME_dev_only_signing_key_min_32_chars"
+      Jwt__SigningKey: "${JWT_SIGNING_KEY:-CHANGE_ME_dev_only_signing_key_min_32_chars}"
       Jwt__ExpiryMinutes: "60"
     depends_on:
       postgres:
