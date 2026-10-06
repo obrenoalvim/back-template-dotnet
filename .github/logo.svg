@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="back-template-dotnet logo">
+<title>back-template-dotnet</title>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1b1e29"/><stop offset="1" stop-color="#0b0c11"/></linearGradient>
+<radialGradient id="gl" cx=".28" cy=".22" r=".8"><stop offset="0" stop-color="#8B6CFF" stop-opacity=".30"/><stop offset="1" stop-color="#8B6CFF" stop-opacity="0"/></radialGradient>
+<linearGradient id="g" gradientUnits="userSpaceOnUse" x1="112" y1="96" x2="400" y2="416"><stop offset="0" stop-color="#C3B2FF"/><stop offset="1" stop-color="#8B6CFF"/></linearGradient>
+</defs>
+<rect width="512" height="512" rx="112" fill="url(#bg)"/>
+<rect width="512" height="512" rx="112" fill="url(#gl)"/>
+<rect x="3" y="3" width="506" height="506" rx="109" fill="none" stroke="#fff" stroke-opacity=".1" stroke-width="6"/>
+<rect x="104" y="108" width="304" height="68" rx="24" fill="url(#g)"/><circle cx="366" cy="142" r="12" fill="#0b0c11" fill-opacity=".85"/><rect x="140" y="135" width="92" height="14" rx="7" fill="#0b0c11" fill-opacity=".55"/><rect x="104" y="222" width="304" height="68" rx="24" fill="url(#g)" fill-opacity="0.78"/><circle cx="366" cy="256" r="12" fill="#0b0c11" fill-opacity=".85"/><rect x="140" y="249" width="92" height="14" rx="7" fill="#0b0c11" fill-opacity=".55"/><rect x="104" y="336" width="304" height="68" rx="24" fill="url(#g)" fill-opacity="0.56"/><circle cx="366" cy="370" r="12" fill="#0b0c11" fill-opacity=".85"/><rect x="140" y="363" width="92" height="14" rx="7" fill="#0b0c11" fill-opacity=".55"/>
+</svg>
